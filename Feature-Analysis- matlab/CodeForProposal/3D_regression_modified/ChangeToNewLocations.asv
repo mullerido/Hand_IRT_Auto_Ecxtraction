@@ -1,0 +1,7 @@
+function [Hand_data_new] = ChangeToNewLocations(Hand_data_old)
+
+
+Sx = size(Hands_data_old,1);
+Sy = size(Hands_data_old,2);
+Sz = size(Hands_data_old,3);
+
