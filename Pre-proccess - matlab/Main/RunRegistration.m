@@ -1,4 +1,18 @@
 function varargout = RunRegistration(varargin)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% The GUI was developed by Ido muller
+% For ease the proccess of performaing:
+%   Image registration of hands images after using
+%   'RunExtractHandFeatures.m' on the baseline image.
+%
+% The GUI allow the user to perform the task automatically, but also to 
+% adjust the result and to perform the registration proccess manually.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 % RUNREGISTRATION MATLAB code for RunRegistration.fig
 %      RUNREGISTRATION, by itself, creates a new RUNREGISTRATION or raises the existing
 %      singleton*.
@@ -565,7 +579,7 @@ featureTable(1,:)=[];
 if contains(movingImage.fileType, '.csv')
     defaultPath = 'C:\Users\ido\Google Drive\Thesis\Data\Processed Data\CSV Feature tables\';
 else
-    defaultPath = 'C:\Users\ido\Google Drive\Thesis\Data\Processed Data\JPG Feature tables\';
+    defaultPath = [pwd '\'];
 end
 if exist(defaultPath, 'dir')
     saveTablePath = [defaultPath imageProccess.subjectID '_' imageProccess.handSide '_Feature_Table.xlsx'];

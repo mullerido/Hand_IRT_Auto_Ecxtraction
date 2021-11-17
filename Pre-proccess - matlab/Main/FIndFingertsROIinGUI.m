@@ -1,5 +1,15 @@
 function FIndFingertsROIinGUI (fingerName)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This open an image and allow the user to press on the image to sign the
+% center of the finger ROI on the image. The function will use this
+% information to create the best circle inside the finger ans use this
+% region as ROI.
+%
+% Written by Ido Muller
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 figure (20);
 global imageProccess
 fingersBW = imageProccess.fingers.BW;
@@ -97,49 +107,3 @@ switch fingerName
 end
 
 close(20)
-
-
-   
-%     %find closest center
-%     distFromCenter = sqrt((colCenter-Userx(fingerInd)).^2+(rowCenter-Usery(fingerInd)).^2);
-%     [~,minId] = min(distFromCenter);
-%     
-%     
-%     %%
-%     % find rectangle arround the center of palm- bu minimal distance from center
-%     % Take the largest blob only.
-%     edtImage = bwdist(~palmBW);
-%     
-%     % Find the max of the EDT:
-%     maxDistance = max(edtImage(:));
-%     [rowCenter, colCenter] = find(edtImage == maxDistance);
-%     
-%     % Get the boundary of the blob.
-%     boundaries = bwboundaries(palmBW);
-%     b = boundaries{1}; % Extract from cell.
-%     x = b(:, 2);
-%     y = b(:, 1);
-%     % Get distances from center to each of the edge pixels.
-%     distances = sqrt((x - colCenter).^2 + (y - rowCenter).^2);
-%     % Find the min distance.
-%     [~, indexOfMin] = min(distances);
-%     % Find x and y of the min
-%     xMin = x(indexOfMin);
-%     yMin = y(indexOfMin);
-%     
-%     % Get the delta x and delta y from center to corner
-%     dx = abs(colCenter - xMin);
-%     dy = abs(rowCenter - yMin);
-%     % Get edges of rectangle by adding and subtracting deltas from center.
-%     row1 = rowCenter - dy;
-%     row2 = rowCenter + dy;
-%     col1 = colCenter - dx;
-%     col2 = colCenter + dx;
-%     % Make a box so we can plot it.
-%     xBox = [col1, col2, col2, col1, col1];
-%     yBox = [row1, row1, row2, row2, row1];
-%     
-%     plamBox = [x
-%     %%
-    
-    

@@ -5,7 +5,9 @@ function [imageOut, theta] = fixImageOrientation(imageIn)
 % Make sure the image orientation is as wanted: from buton to top, when the
 % fingers pointing up
 %
+% Written by Ido Muller
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % imageIn(all(imageIn==0,2),:)=[];
 % imageIn(:, all(imageIn==0,1))=[];
 

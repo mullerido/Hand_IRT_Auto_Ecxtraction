@@ -1,5 +1,12 @@
 function tipCircle = FindCircleInFingerTip (imageEdges, rowCenter, colCenter)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use to find a circle in bwtween edges, given center points.
+%
+% Written by Ido Muller
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 x = imageEdges(:, 2);
 y = imageEdges(:, 1);
     

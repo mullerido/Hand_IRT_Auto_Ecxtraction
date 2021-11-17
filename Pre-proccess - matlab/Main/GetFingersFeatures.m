@@ -1,5 +1,9 @@
 function fetures = GetFingersFeatures(image, fingersTipsROI, fingerBasesROI, fingerNams)
-
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % Use to extract all fingers ROIs features.
+ %
+ % Written by Ido Muller
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fetures = [];
 
 fingerNames = {'Thumbs', 'Index', 'Middle', 'Ring', 'Pinky'};

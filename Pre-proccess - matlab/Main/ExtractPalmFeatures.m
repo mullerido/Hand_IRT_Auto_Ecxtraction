@@ -1,6 +1,10 @@
 function [palmProps, palmElipse, plamBox]= ExtractPalmFeatures (palmBW, plotFlag)
 
-% Thisfunction extract the palm ROI and properties
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This function extract the palm ROI and its properties
+%
+% Written by Ido Muller
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 palmCC = bwconncomp(palmBW);
 palmProps = regionprops(palmCC,'Area');

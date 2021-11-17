@@ -1,5 +1,13 @@
 function [palmBox, palmElipse] = ExtractPalmROI(palmBW, palmProps, plotFlag)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Find the cordinate of the square regiond arround the palm center and for
+% the palm arche- that is sorrt of elipsoid found abofe the center square
+% and below the fingers.
+%
+% Written By Ido Muller
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% find rectangle arround the center of palm- by enlarging the rectangle
 % Take the largest blob only.
 imageMask = zeros(size(palmBW));

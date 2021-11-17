@@ -1,4 +1,15 @@
 function [fingersTipROI, fingersBaseROI, fingersProps] = ExtractFingersROI (fingersBW, handSide, palmCenter, plotFlag)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use to extract all fingers ROIs given:
+%       1) a segmented hand inage.
+%       2) hand side ('left' or 'right'
+%       3) palmCenter- 1x2 vector with the position of the center of the
+%       palm.  This is a result of ExtractPalmFeatures.m
+%
+ % Written by Ido Muller
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
 wInd=0;
 w=waitbar(wInd, 'Please wait, starting fingers segmentation...');
 pause(0.01);

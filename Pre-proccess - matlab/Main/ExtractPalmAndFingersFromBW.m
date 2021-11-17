@@ -1,5 +1,11 @@
 function [fingersBW, palmBW, changeInAreaUtils] = ExtractPalmAndFingersFromBW(BW)
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Written By Ido Muller
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %compute width of hand to limit iterations
 bbox = regionprops(BW,'BoundingBox');
 % maxRad = max(bbox.BoundingBox(3),bbox.BoundingBox(4));

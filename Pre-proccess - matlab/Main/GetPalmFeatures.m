@@ -1,6 +1,14 @@
 function features = GetPalmFeatures(image, elipse,...
      palmBox)
 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This finction is used to get the palm features from both the palm center
+% square and arche
+%
+% Written by Ido Muller
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 imageSize = size(image);
 
 %% Palm elipse/arch features

@@ -1,5 +1,15 @@
 function FindPalmROIinGUI()
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This open an image and allow the user to press on the image to sign the
+% center of the palm on the image. The function will use this
+% information to create the best square inside the palm and and arche above
+% this squareans use this regions as ROIs.
+%
+% Written by Ido Muller
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 figure (2);
 global imageProccess
 palmBox = []; 
