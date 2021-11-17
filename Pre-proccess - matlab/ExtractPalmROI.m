@@ -47,7 +47,7 @@ yBox = palmBox(2,:);
 % semi-major and semi-minor axes, center, and image size.
 % From the FAQ: https://matlab.wikia.com/wiki/FAQ#How_do_I_create_an_ellipse.3F
 xRadius = wide+10;% palmProps.MinorAxisLength / 2;
-yRadius = palmProps.MajorAxisLength / 2-30;
+yRadius = palmProps.MajorAxisLength / 2-10;
 % Make an angle array of about the same number of angles as there are pixels in the perimeter.
 theta = linspace(0, 2*pi, ceil(palmProps.Perimeter));
 x = xRadius * cos(theta);

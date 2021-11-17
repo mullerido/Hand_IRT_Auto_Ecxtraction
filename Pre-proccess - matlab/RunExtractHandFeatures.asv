@@ -1,23 +1,16 @@
 function varargout = RunExtractHandFeatures(varargin)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% The GUI was developed by Ido muller
+% GUI was developed by Ido muller
 % For ease the proccess of performaing:
 %   1. hand registration & segmentation.
 %   2. Finding Region Of Interest (ROI):
-%       - Finger tips (distal) X 5
-%       - Finger base (proxy)  X 5
-%       - Palm Center square X 1
-%       - Palm arch X1
-%   3. For each ROI to extract relevant information. For example, the
-%       acerage intence, entropy and histogram
-%   4. Save this data
+%       - Finger tips (distal) 
+%       - Finger base (proxy)
 %
 % The GUI allow the user to perform the task automatically, but also to 
-% adjust the result and to perform the segmentation proccess manually.
+% Adjust the result or to perform the segmentation manually.
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% 
 % RUNEXTRACTHANDFEATURES MATLAB code for RunExtractHandFeatures.fig
 %      RUNEXTRACTHANDFEATURES, by itself, creates a new RUNEXTRACTHANDFEATURES or raises the existing
 %      singleton*.

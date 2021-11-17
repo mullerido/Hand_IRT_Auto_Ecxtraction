@@ -13,7 +13,7 @@ if exist('plotFlag', 'var') && plotFlag
     subplot(2,3,2);
     title('Change in area (blue) and first derivative (red)');
     yyaxis left
-    plot(changeInAreaUtils.radii(2:end,1),changeInAreaUtils.dy,'LineWidth',1);hold on
+    plot(changeInAreaUtils.radii,changeInAreaUtils.dy,'LineWidth',1);hold on
     plot(changeInAreaUtils.radii(changeInAreaUtils.pks,1),...
         changeInAreaUtils.dy(changeInAreaUtils.pks,1),'*r')
     ylabel('dA/dr','FontSize',8)
@@ -28,7 +28,7 @@ if exist('plotFlag', 'var') && plotFlag
 
     subplot(2,3,3);
     title('Derivative of area and selected points');
-    plot(changeInAreaUtils.radii(2:end,1),changeInAreaUtils.dy);
+    plot(changeInAreaUtils.radii,changeInAreaUtils.dy);
     hold on
     plot(changeInAreaUtils.radii(changeInAreaUtils.pks,1),...
         changeInAreaUtils.dy(changeInAreaUtils.pks,1),'*r');

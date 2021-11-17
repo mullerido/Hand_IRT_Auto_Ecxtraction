@@ -36,11 +36,11 @@ areaVec(isnan(areaVec(:,1)),:)=[];%remove extra variables at the end (if nan rem
 %differentiate number of pixels at each iteration with radius of SE used
 areas = areaVec(:,1);
 radii = areaVec(:,2);
-dy = abs(diff(areas)./diff(radii));
+dy = [nan; abs(diff(areas)./diff(radii))];
 
-%% IDO
+%%
 localSTD = stdfilt(dy);
-[peaks,locations] = findpeaks(localSTD,radii(2:end,1),'MinPeakHeight',mean(localSTD)+std(localSTD)/2);
+[peaks,locations] = findpeaks(localSTD,radii,'MinPeakHeight',mean(localSTD)+std(localSTD)/2);
 
 % %find the peaks in the first derivative of the area
 % [peaks,locations] = findpeaks(dy,radii(2:end,1));
