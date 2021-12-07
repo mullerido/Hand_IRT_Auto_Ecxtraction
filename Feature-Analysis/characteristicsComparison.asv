@@ -6,7 +6,7 @@ if true
     savepath = 'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs Gravity to BaseLine\';%Vs BaseLine\';
     filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis- matlab\JPGfeatureDataFile.mat';
     load(filesPath);
-    type='grav2Base';  %'BaseLine';% Or 
+    type='BaseLine';%'grav2Base';  % Or 
     chaPat='G:\My Drive\Thesis\Data\Characteristics.xlsx';
     characteristicTable = readtable(chaPat);
 

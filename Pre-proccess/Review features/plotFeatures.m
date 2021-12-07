@@ -27,7 +27,8 @@ function varargout = plotFeatures(varargin)
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
-                   'gui_Singleton',  gui_Singleton, ...
+                   ['' ...
+                   'gui_Singleton'],  gui_Singleton, ...
                    'gui_OpeningFcn', @plotFeatures_OpeningFcn, ...
                    'gui_OutputFcn',  @plotFeatures_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
@@ -284,7 +285,21 @@ sInd = strfind(filePath,'s_');
 dashInd = strfind(filePath,'_');
 featureToPlot.id = filePath(sInd:sInd+6);%dashInd(find(dashInd>sInd,1,'first')));
 tempTimeChar = featureTable.Time;
-if any(contains(tempTimeChar,':'))
+if isnumeric(tempTimeChar)
+    [featureToPlot.sortedFeatureTable, idx] = sortrows(featureTable, timeColIdx);
+    timeNum = featureToPlot.sortedFeatureTable.Time;
+    timeChar = datestr(timeNum-floor(timeNum), 'HH:MM:SS');
+    dt = [0; timeNum(2:end,1)-timeNum(1,1)];
+    
+    %Find trial phase
+    reverseDt = [timeNum(1:end-1,1) - (timeNum(end,1)-10/1440);1];
+    midInd = find(sign(reverseDt(1:end-1,1).*reverseDt(2:end,1))<0);
+    
+    dtDiff = [zeros(midInd-3,1); diff(timeNum(midInd-3:midInd+3,1)); zeros(size(timeNum,1)-(midInd+3),1)];
+    [~, mInd] = max(dtDiff);
+    featureToPlot.RecoveryInd = find(featureTable.phase ==2, 1, 'first');%mInd-1;
+    
+elseif any(contains(tempTimeChar,':'))
     [featureToPlot.sortedFeatureTable, idx] = sortrows(featureTable, timeColIdx);
     timeChar = featureToPlot.sortedFeatureTable.Time;
     times = cellfun(@(x) datenum(x,'HH:MM:SS'),timeChar);
