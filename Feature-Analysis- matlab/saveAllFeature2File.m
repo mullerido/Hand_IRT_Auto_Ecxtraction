@@ -1,4 +1,4 @@
-allFilesPath = 'C:\Users\ido\Google Drive\Thesis\Data\Processed Data\JPG Feature tables\';
+allFilesPath = 'G:\My Drive\Thesis\Data\Processed Data\JPG Feature tables\';
 
 allFilesT = struct2cell(dir(allFilesPath))';
 isXLS = cellfun(@(x) contains(x, '.xlsx'), allFilesT(:,1));

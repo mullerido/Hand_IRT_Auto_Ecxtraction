@@ -1,19 +1,20 @@
-if false
+clear all
+if true
     %% Analyze temp at t0 or between t_gravity-t0 in relate to the characteristics
 
     clear all
-    savepath = 'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs BaseLine\';
+    savepath = 'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs Gravity to BaseLine\';%Vs BaseLine\';
     filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis- matlab\JPGfeatureDataFile.mat';
     load(filesPath);
-    type='BaseLine';% Or 'grav2Base';  
+    type='grav2Base';  %'BaseLine';% Or 
     chaPat='G:\My Drive\Thesis\Data\Characteristics.xlsx';
     characteristicTable = readtable(chaPat);
 
-    analyzedCharectTitle = {'Gender_Annova', 'Age', 'High', 'Weight','Is_smoking_Annova',...
+    analyzedCharectTitle = {'Gender_Annova', 'Age', 'High', 'Weight','BMI','Is_smoking_Annova',...
         'Phys_Act_Freq_Annova','Phys_Act_Intence_Annova', 'Pulse_Presure'};
     %{'Gender', 'Age', 'High', 'weight', 'Is_smoking',...
     %'Phys_Act_Freq','Phys_Act_Intence', 'Pulse_Presure'};
-    nameOfCharactaristic = {'Gender_m_0_F_1_', 'Age', 'High_cm_','Weight_kg_', 'Is_smoking_', ...
+    nameOfCharactaristic = {'Gender_m_0_F_1_', 'Age', 'High_cm_','Weight_kg_','BMI', 'Is_smoking_', ...
        'PhysicalActivity_frequency_0_0_1_2_1_2_3_2_3AndUp_3', 'Physical_activity_intensit_light_0_Mild_1Intens_2_','PP'};
     currentAnalysis = 'intence';
     allCurrentAnaInds = cellfun(@(x) ~isempty(x), cellfun(@(x) strfind(lower(x), currentAnalysis), variableNames,'UniformOutput',false));
@@ -30,7 +31,7 @@ if false
         curChageName = nameOfCharactaristic{charInd};
         if strcmp(type, 'grav2Base')
             for paInd = 1:size(characteristicTable,1)
-                currentId = characteristicTable.Ext_name{paInd};
+                currentId = characteristicTable.Ext_name_fix{paInd};
                 leftMat(paInd,1,:) = characteristicTable.(curChageName)(paInd); % Change struct field according to the analyzedCarect
                 rightMat(paInd,1,:)= characteristicTable.(curChageName)(paInd);% Change struct field according to the analyzedCarect
                 matchInd = find(cellfun(@(x) strcmp(x, currentId), correspondedId));
@@ -45,7 +46,7 @@ if false
 
                                 dataId = find(cellfun(@(x) x==1, cellfun(@(x) strcmpi(lower(x), allROIs{ROIind}), variableNames,'UniformOutput',false)));
                                 BaseLine = allFeatureMat(1,dataId,ind);
-                                endGrav = allFeatureMat(find(allFeatureMat(:,1,ind)==2,1,'first'), dataId,ind);
+                                endGrav = allFeatureMat(find(allFeatureMat(:,1,ind)==2,1,'first')-1, dataId,ind);
                                 leftMat(paInd, 2, ROIind) = endGrav-BaseLine;
 
                             end
@@ -55,7 +56,7 @@ if false
 
                                 dataId = find(cellfun(@(x) x==1, cellfun(@(x) strcmpi(lower(x), allROIs{ROIind}), variableNames,'UniformOutput',false)));
                                 BaseLine = allFeatureMat(1,dataId,ind);
-                                endGrav = allFeatureMat(find(allFeatureMat(:,1,ind)==2,1,'first'), dataId,ind);
+                                endGrav = allFeatureMat(find(allFeatureMat(:,1,ind)==2,1,'first')-1, dataId,ind);
                                 rightMat(paInd, 2, ROIind) = endGrav-BaseLine;
 
                             end
@@ -73,7 +74,7 @@ if false
             % Compare with BaseLine
         else%if strcmp(type,'BaseLine')
             for paInd = 1:size(characteristicTable,1)
-                currentId = characteristicTable.Ext_name{paInd};
+                currentId = characteristicTable.Ext_name_fix{paInd};
                 leftMat(paInd,1,:) = characteristicTable.(curChageName)(paInd); % Change struct field according to the analyzedCarect
                 rightMat(paInd,1,:)= characteristicTable.(curChageName)(paInd);% Change struct field according to the analyzedCarect
                 matchInd = find(cellfun(@(x) strcmp(x, currentId), correspondedId));
@@ -118,53 +119,57 @@ if false
                 titleTxt = ['Left Hand : ' curCharTitle ' Vs. ' allROIs{ROIind}];
                 [a,b,stats]=anova1(leftMat(:,2,ROIind), leftMat(:,1,ROIind));
                 [c,~,~,gnames] = multcompare(stats);
-                if true%~any(c(:,6)<0.05)
+                
 
-                    compTable = array2table(c(:,[1,2,6]), 'VariableName', {'group 1','group 2', 'p_value'});
-                    close all
-                    L_Fig = figure(1);
-                    axes('position',[.1,.4,.8,.5])
-                    boxplot(leftMat(:,2,ROIind), leftMat(:,1,ROIind));
-                    ylabel(currentAnalysis);
-                    txtBox = sprintf('%s',titleTxt);
-                    title(txtBox, 'Interpreter', 'none');
-
-                    % Convert Table to cell to char array
-                    tableCell = [compTable.Properties.VariableNames; table2cell(compTable)];
-                    tableCell(cellfun(@isnumeric,tableCell)) = cellfun(@num2str, tableCell(cellfun(@isnumeric,tableCell)),'UniformOutput',false);
-                    tableChar = splitapply(@strjoin,pad(tableCell),[1:size(tableCell,1)]');
-                    % Add axes (not visible) & text (use a fixed width font)
-                    axes('position',[.1,.15,.8,.2], 'Visible','off');
-                    text(.2,.95,tableChar,'VerticalAlignment','Top','HorizontalAlignment','Left','FontName','Consolas', 'Interpreter', 'none');
-
+                compTable = array2table(c(:,[1,2,6]), 'VariableName', {'group 1','group 2', 'p_value'});
+                close all
+                L_Fig = figure(1);
+                axes('position',[.1,.4,.8,.5])
+                boxplot(leftMat(:,2,ROIind), leftMat(:,1,ROIind));
+                ylabel(currentAnalysis);
+                txtBox = sprintf('%s',titleTxt);
+                title(txtBox, 'Interpreter', 'none');
+                
+                % Convert Table to cell to char array
+                tableCell = [compTable.Properties.VariableNames; table2cell(compTable)];
+                tableCell(cellfun(@isnumeric,tableCell)) = cellfun(@num2str, tableCell(cellfun(@isnumeric,tableCell)),'UniformOutput',false);
+                tableChar = splitapply(@strjoin,pad(tableCell),[1:size(tableCell,1)]');
+                % Add axes (not visible) & text (use a fixed width font)
+                axes('position',[.1,.15,.8,.2], 'Visible','off');
+                text(.2,.95,tableChar,'VerticalAlignment','Top','HorizontalAlignment','Left','FontName','Consolas', 'Interpreter', 'none');
+                if any(c(:,6)<0.05)
+                    
+                    saveas(L_Fig, [savepath 'Left\Significant\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
+                else
                     saveas(L_Fig, [savepath 'Left\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
-                    close all
+                    
                 end
                 close all
                 %% Right Hand
                 titleTxt = ['Right Hand : ' curCharTitle ' Vs. ' allROIs{ROIind}];
                 [a,b,stats]=anova1(rightMat(:,2,ROIind), rightMat(:,1,ROIind));
                 [c,~,~,gnames] = multcompare(stats);
-                if true%~any(c(:,6)<0.05)
-                    compTable = array2table(c(:,[1,2,6]), 'VariableName', {'group 1','group 2', 'p_value'});
-                    close all
-                    L_Fig = figure(1);
-                    axes('position',[.1,.4,.8,.5])
-                    boxplot(rightMat(:,2,ROIind), rightMat(:,1,ROIind));
-                    ylabel(currentAnalysis);
-                    txtBox = sprintf('%s',titleTxt);
-                    title(txtBox, 'Interpreter', 'none');
-
-                    % Convert Table to cell to char array
-                    tableCell = [compTable.Properties.VariableNames; table2cell(compTable)];
-                    tableCell(cellfun(@isnumeric,tableCell)) = cellfun(@num2str, tableCell(cellfun(@isnumeric,tableCell)),'UniformOutput',false);
-                    tableChar = splitapply(@strjoin,pad(tableCell),[1:size(tableCell,1)]');
-                    % Add axes (not visible) & text (use a fixed width font)
-                    axes('position',[.1,.15,.8,.2], 'Visible','off');
-                    text(.2,.95,tableChar,'VerticalAlignment','Top','HorizontalAlignment','Left','FontName','Consolas', 'Interpreter', 'none');
-
+                
+                compTable = array2table(c(:,[1,2,6]), 'VariableName', {'group 1','group 2', 'p_value'});
+                close all
+                L_Fig = figure(1);
+                axes('position',[.1,.4,.8,.5])
+                boxplot(rightMat(:,2,ROIind), rightMat(:,1,ROIind));
+                ylabel(currentAnalysis);
+                txtBox = sprintf('%s',titleTxt);
+                title(txtBox, 'Interpreter', 'none');
+                
+                % Convert Table to cell to char array
+                tableCell = [compTable.Properties.VariableNames; table2cell(compTable)];
+                tableCell(cellfun(@isnumeric,tableCell)) = cellfun(@num2str, tableCell(cellfun(@isnumeric,tableCell)),'UniformOutput',false);
+                tableChar = splitapply(@strjoin,pad(tableCell),[1:size(tableCell,1)]');
+                % Add axes (not visible) & text (use a fixed width font)
+                axes('position',[.1,.15,.8,.2], 'Visible','off');
+                text(.2,.95,tableChar,'VerticalAlignment','Top','HorizontalAlignment','Left','FontName','Consolas', 'Interpreter', 'none');
+                if any(c(:,6)<0.05)
+                    saveas(L_Fig, [savepath 'Right\Significant\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
+                else
                     saveas(L_Fig, [savepath 'Right\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
-                    close all
                 end
                 close all
             end
@@ -177,15 +182,17 @@ if false
                 plot(leftMat(:,1,ROIind), leftMat(:,2,ROIind), 'o', 'color', [0 0.4470 0.7410],...
                     'MarkerSize', 10);
                 mdl = fitlm(leftMat(:,1,ROIind),leftMat(:,2,ROIind));
-                if true%~mdl.Coefficients.pValue(2)<0.05
-
-                    txtBox = sprintf('%s\nR^2= %0.2f,                   R^2 Adjusted= %0.02f\nMSE= %0.02f,                         \tP-val= %0.02f',...
-                        titleTxt,mdl.Rsquared.Ordinary, mdl.Rsquared.Adjusted, mdl.MSE, mdl.Coefficients.pValue(2));
-                    %      annotation('textbox',[0.75, 0.8,0.1,0.1],'String', txtBox );
-                    title(txtBox, 'Interpreter', 'none');
-                    xlabel(curCharTitle, 'Interpreter', 'none');
-                    ylabel(currentAnalysis, 'Interpreter', 'none');
-
+                
+                
+                txtBox = sprintf('%s\nR^2= %0.2f,                   R^2 Adjusted= %0.02f\nMSE= %0.02f,                         \tP-val= %0.02f',...
+                    titleTxt,mdl.Rsquared.Ordinary, mdl.Rsquared.Adjusted, mdl.MSE, mdl.Coefficients.pValue(2));
+                %      annotation('textbox',[0.75, 0.8,0.1,0.1],'String', txtBox );
+                title(txtBox, 'Interpreter', 'none');
+                xlabel(curCharTitle, 'Interpreter', 'none');
+                ylabel(currentAnalysis, 'Interpreter', 'none');
+                if mdl.Coefficients.pValue(2)<0.05
+                    saveas(L_Fig, [savepath 'Left\Significant\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
+                else
                     saveas(L_Fig, [savepath 'Left\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
                 end
                 close all
@@ -193,15 +200,18 @@ if false
                 R_Fig = figure(2);
                 titleTxt = ['Right Hand : ' curCharTitle ' Vs. ' allROIs{ROIind}];
                 mdl = fitlm(rightMat(:,1,ROIind),rightMat(:,2,ROIind));
-                if true%~mdl.Coefficients.pValue(2)<0.05
-                    txtBox = sprintf('%s\nR^2= %0.2f,                   R^2 Adjusted= %0.02f\nMSE= %0.02f,                         \tP-val= %0.02f',...
-                        titleTxt,mdl.Rsquared.Ordinary, mdl.Rsquared.Adjusted, mdl.MSE, mdl.Coefficients.pValue(2));
-                    plot(rightMat(:,1,ROIind), rightMat(:,2,ROIind), 'o', 'color', [0 0.4470 0.7410],...
-                        'MarkerSize', 10);
-                    title(txtBox, 'Interpreter', 'none');
-                    xlabel(curCharTitle, 'Interpreter', 'none');
-                    ylabel(currentAnalysis, 'Interpreter', 'none');
-                    saveas( R_Fig, [savepath 'Right\' curCharTitle ' _Vs_ ' allROIs{ROIind} '.png']);
+                
+                txtBox = sprintf('%s\nR^2= %0.2f,                   R^2 Adjusted= %0.02f\nMSE= %0.02f,                         \tP-val= %0.02f',...
+                    titleTxt,mdl.Rsquared.Ordinary, mdl.Rsquared.Adjusted, mdl.MSE, mdl.Coefficients.pValue(2));
+                plot(rightMat(:,1,ROIind), rightMat(:,2,ROIind), 'o', 'color', [0 0.4470 0.7410],...
+                    'MarkerSize', 10);
+                title(txtBox, 'Interpreter', 'none');
+                xlabel(curCharTitle, 'Interpreter', 'none');
+                ylabel(currentAnalysis, 'Interpreter', 'none');
+                if mdl.Coefficients.pValue(2)<0.05
+                    saveas( R_Fig, [savepath 'Right\Significant\' curCharTitle '_Vs_ ' allROIs{ROIind} '.png']);
+                else
+                    saveas( R_Fig, [savepath 'Right\' curCharTitle '_Vs_ ' allROIs{ROIind} '.png']);
                 end
                 close all
 
@@ -212,19 +222,20 @@ else
     %% Analyze the labels in relate to the characteristics
     
     clear all
-    savepath = 'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs labels\';
+    savepath = 'G:\My Drive\Thesis\Project\Results\tSNE\right hand ditribution\';%'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs labels\';
     filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis- matlab\JPGfeatureDataFile.mat';
     load(filesPath);
-    label_path='G:\My Drive\Thesis\Data\Labels_all.xlsx';
-    char_path = 'G:\My Drive\Thesis\Data\Characteristics.xlsx';
+    label_path='G:\My Drive\Thesis\Project\Results\tSNE\right hand ditribution\Labels_all.xlsx';%'G:\My Drive\Thesis\Data\Labels_all.xlsx';
+    char_path = 'G:\My Drive\Thesis\Project\Results\tSNE\right hand ditribution\Characteristics.xlsx';%G:\My Drive\Thesis\Data\Characteristics.xlsx';
     s_out = 's_30';
-    label_table = readtable(label_path);
-    label_table_cat = double(categorical(label_table.label));
+    %label_table = readtable(label_path);
+    %label_table_cat = double(categorical(label_table.label));
     characteristicTable = readtable(char_path);
     ind_out = find(cellfun(@(x) x==1, ...
         cellfun(@(x) strcmp(x, s_out) ,...
         characteristicTable.Ext_name_short, 'UniformOutput', false)));
     characteristicTable(ind_out, :)=[];
+    label_table_cat = characteristicTable.Group;
     characteristicMat_cat = [characteristicTable.Gender_m_0_F_1_, characteristicTable.Is_smoking_,...
         characteristicTable.Is_formerSmoker_ ,...
         characteristicTable.PhysicalActivity_frequency_0_0_1_2_1_2_3_2_3AndUp_3 ,...
@@ -233,9 +244,9 @@ else
     nameOfCat = {'Gender', 'Is_smoking', 'Is_formerSmoker', 'Activ_freq', 'Activ_intens'};
     characteristicMat_cont = [characteristicTable.Age,...
         characteristicTable.High_cm_,...
-        characteristicTable.Weight_kg_ ,characteristicTable.PP];
-    nameOfNum = {'Age', 'High', 'Weight', 'PP'};
-    y_label = {'Years', 'cm', 'kg', 'pp'};
+        characteristicTable.Weight_kg_ ,characteristicTable.BMI, characteristicTable.PP];
+    nameOfNum = {'Age', 'High', 'Weight', 'BMI' 'PP'};
+    y_label = {'Years', 'cm', 'kg', 'BMI', 'pp'};
     
     % numeric Annova comparison
     for n_i =1 : length(nameOfNum)
@@ -254,9 +265,9 @@ else
         title(txtBox, 'Interpreter', 'none');
         y_lim = get(gca, 'ylim');
         ylim([y_lim(1), y_lim(2)*1.2])
-        text(0.95, y_lim(2)*1.1, sprintf('N= %d',sum(label_table_cat==1)));
-        text(1.95, y_lim(2)*1.1, sprintf('N= %d',sum(label_table_cat==2)));
-        text(2.95, y_lim(2)*1.1, sprintf('N= %d',sum(label_table_cat==3)));
+        text(0.95, y_lim(2)*1.1, sprintf('N= %d',11));%sum(label_table_cat==1)));
+        text(1.95, y_lim(2)*1.1, sprintf('N= %d',18));%sum(label_table_cat==2)));
+        %text(2.95, y_lim(2)*1.1, sprintf('N= %d',sum(label_table_cat==3)));
         % Convert Table to cell to char array
         tableCell = [compTable.Properties.VariableNames; table2cell(compTable)];
         tableCell(cellfun(@isnumeric,tableCell)) = cellfun(@num2str, tableCell(cellfun(@isnumeric,tableCell)),'UniformOutput',false);
