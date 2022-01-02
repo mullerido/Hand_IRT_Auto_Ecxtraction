@@ -1,6 +1,6 @@
 %% Resize feature to have same number of time stamps
 
-load('C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis- matlab\featureDataFile.mat')
+load('C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\featureDataFile.mat')
 
 [allDT , timeFactor, updateAllDts]= deal([]);
 maxTime = 20*60;
@@ -63,7 +63,7 @@ for sInd = 1: size(allFeatureMat,3)
 %     if strfind(sName,'s_19')
 %         x=1;
 %     end
-    filesName = ['C:\Users\IdoMuller\OneDrive - DreaMed, Ltd\Desktop\Temp\JPG Resize Feature Tables\' sName '.xlsx'];
+    filesName = ['C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\Resize Feature\' sName '.xlsx'];
     try
         writetable(featureTable, filesName);
     catch

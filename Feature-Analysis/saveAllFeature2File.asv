@@ -35,8 +35,8 @@ for fileInd =1:size(allFiles,1)
         correspondedHandSide = [correspondedHandSide; 'left'];
     end
         
-    if (id==20 && ~isempty(strmatch(correspondedHandSide{fileInd},'right'))) ||...
-            (id ==17 && ~isempty(strmatch(correspondedHandSide{fileInd},'left')))
+    if (id==20 && strmatch(correspondedHandSide{fileInd}=='right')) ||...
+            (id ==17 && correspondedHandSide{fileInd}=='left')
         featureTable(1:4,:)=[];
     end
     tempTimeChar = featureTable.Time;
@@ -102,4 +102,4 @@ for fileInd =1:size(allFiles,1)
     allFeatureMat(1:size(sortedFeatureTable,1),4:end,fileInd) = table2array(sortedFeatureTable(:,4:end));
 end
 
-save('C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\featureDataFile.mat', 'variableNames', 'allFeatureMat', 'correspondedId', 'correspondedHandSide');
+save('C:\Projects\Thesis\Feature-Analysis- matlab\featureDataFile.mat', 'variableNames', 'allFeatureMat', 'correspondedId', 'correspondedHandSide');

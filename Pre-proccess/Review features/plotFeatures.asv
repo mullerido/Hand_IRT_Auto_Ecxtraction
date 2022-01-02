@@ -537,7 +537,7 @@ plotLine(handles, dt, ave_data, movingAveWinTgl, [0, 0, 0], '-');
 axes(handles.secondaryPlot);
 hold on
 xticks(dt(tixc));
-xticklabels(featureToPlot.timeChar(tixc,:));
+xticklabels(featureToPlot.timeChar(tixc));
 xtickangle(45);
 
 if get(handles.yLim2FigTgl, 'Value')
@@ -549,7 +549,7 @@ if get(handles.yLim2FigTgl, 'Value')
     end
     uYLim = [t_min*1.1, t_max*1.1];
 else
-    uYLim = [-2, 2];
+    uYLim = [-3, 3];
     
 end
 ylim(uYLim);

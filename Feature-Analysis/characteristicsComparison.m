@@ -1,21 +1,20 @@
 clear all
-if true
+if false
     %% Analyze temp at t0 or between t_gravity-t0 in relate to the characteristics
 
     clear all
-    savepath = 'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs Gravity to BaseLine\';%Vs BaseLine\';
-    filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\JPGfeatureDataFile.mat';
+    savepath = 'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs Gravity to BaseLine\';%Vs BaseLine\';%
+    filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\featureDataFile.mat';%JPGfeatureDataFile.mat';
     load(filesPath);
-    type='grav2Base';  %'BaseLine';% Or 
+    type='grav2Base';  % 'BaseLine';%Or 
     chaPat='G:\My Drive\Thesis\Data\Characteristics.xlsx';
     characteristicTable = readtable(chaPat);
 
-    analyzedCharectTitle = {'Gender_Annova', 'Age', 'High', 'Weight','BMI','Is_smoking_Annova',...
-        'Phys_Act_Freq_Annova','Phys_Act_Intence_Annova', 'Pulse_Presure'};
-    %{'Gender', 'Age', 'High', 'weight', 'Is_smoking',...
-    %'Phys_Act_Freq','Phys_Act_Intence', 'Pulse_Presure'};
-    nameOfCharactaristic = {'Gender_m_0_F_1_', 'Age', 'High_cm_','Weight_kg_','BMI', 'Is_smoking_', ...
-       'PhysicalActivity_frequency_0_0_1_2_1_2_3_2_3AndUp_3', 'Physical_activity_intensit_light_0_Mild_1Intens_2_','PP'};
+    analyzedCharectTitle = {'SBP', 'DBP'};%{'Gender_Annova', 'Age', 'High', 'Weight','BMI','Is_smoking_Annova',...
+        %'Phys_Act_Freq_Annova','Phys_Act_Intence_Annova', 'Pulse_Presure'};
+    
+    nameOfCharactaristic = {'SBP', 'DBP'};%{'Gender_m_0_F_1_', 'Age', 'High_cm_','Weight_kg_','BMI', 'Is_smoking_', ...
+       %'PhysicalActivity_frequency_0_0_1_2_1_2_3_2_3AndUp_3', 'Physical_activity_intensit_light_0_Mild_1Intens_2_','PP'};
     currentAnalysis = 'intence';
     allCurrentAnaInds = cellfun(@(x) ~isempty(x), cellfun(@(x) strfind(lower(x), currentAnalysis), variableNames,'UniformOutput',false));
 
@@ -222,19 +221,38 @@ else
     %% Analyze the labels in relate to the characteristics
     
     clear all
-    savepath = 'G:\My Drive\Thesis\Project\Results\tSNE\right hand ditribution\';%'G:\My Drive\Thesis\Project\Results\Charectarisitcs analysis\Vs labels\';
-    filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis- matlab\JPGfeatureDataFile.mat';
+    savepath = 'G:\My Drive\Thesis\Project\Results\Heat progression analysis\Fingers dists to palm center- using ratio\';
+    filesPath='C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\featureDataFile.mat';
     load(filesPath);
-    label_path='G:\My Drive\Thesis\Project\Results\tSNE\right hand ditribution\Labels_all.xlsx';%'G:\My Drive\Thesis\Data\Labels_all.xlsx';
-    char_path = 'G:\My Drive\Thesis\Project\Results\tSNE\right hand ditribution\Characteristics.xlsx';%G:\My Drive\Thesis\Data\Characteristics.xlsx';
-    s_out = 's_30';
-    %label_table = readtable(label_path);
-    %label_table_cat = double(categorical(label_table.label));
+    label_path='G:\My Drive\Thesis\Project\Results\Heat progression analysis\Fingers dists to palm center- using ratio\label.xlsx';%'G:\My Drive\Thesis\Project\Results\Manual labeling\labeling- gravity phase- fingers only.xlsx';%'G:\My Drive\Thesis\Data\Labels_all.xlsx';
+    char_path = 'G:\My Drive\Thesis\Data\Characteristics.xlsx';
+    
+    label_table = readtable(label_path);
     characteristicTable = readtable(char_path);
-    ind_out = find(cellfun(@(x) x==1, ...
-        cellfun(@(x) strcmp(x, s_out) ,...
-        characteristicTable.Ext_name_short, 'UniformOutput', false)));
-    characteristicTable(ind_out, :)=[];
+
+    % Find subject that are found in label but not in the characteristic table
+    s_out = [];
+    labels = {'0'; '1';'2'};%{'Negative'; 'Stable'; 'Positive'};
+    characteristicTable.Group = cell(size(characteristicTable,1),1);
+    for s_ind =1: size(characteristicTable,1)
+        current_name = characteristicTable.Ext_name_fix{s_ind,1};
+        ind_in = find(cell2mat(cellfun(@(x) ~isempty(x), ...
+            cellfun(@(x) strfind(x, current_name(1:4)) ,...
+            table2cell(label_table(:,1)), 'UniformOutput', false),'UniformOutput',false)));
+        if ~isempty(ind_in)
+            characteristicTable.Group(s_ind) = labels(label_table{ind_in,'label'}+1);
+        else
+            % Remove subject that found characteristics table but not in
+            % labels table
+            s_out = [s_out; s_ind];
+        end
+
+    end
+    
+    characteristicTable(s_out, :)=[];
+
+    %label_table_cat = double(categorical(label_table.label));
+    
     label_table_cat = characteristicTable.Group;
     characteristicMat_cat = [characteristicTable.Gender_m_0_F_1_, characteristicTable.Is_smoking_,...
         characteristicTable.Is_formerSmoker_ ,...
@@ -244,30 +262,46 @@ else
     nameOfCat = {'Gender', 'Is_smoking', 'Is_formerSmoker', 'Activ_freq', 'Activ_intens'};
     characteristicMat_cont = [characteristicTable.Age,...
         characteristicTable.High_cm_,...
-        characteristicTable.Weight_kg_ ,characteristicTable.BMI, characteristicTable.PP];
-    nameOfNum = {'Age', 'High', 'Weight', 'BMI' 'PP'};
-    y_label = {'Years', 'cm', 'kg', 'BMI', 'pp'};
+        characteristicTable.Weight_kg_ ,characteristicTable.BMI, characteristicTable.PP,...
+        characteristicTable.SBP, characteristicTable.DBP];
+    nameOfNum = {'Age', 'High', 'Weight', 'BMI' 'PP', 'SBP', 'DBP'};
+    y_label = {'Years', 'cm', 'kg', 'BMI', 'pp', 'SBP', 'DBP'};
     
     % numeric Annova comparison
     for n_i =1 : length(nameOfNum)
         
         titleTxt = [nameOfNum{n_i} ' Vs. Label' ];
-        [a,b,stats]=anova1(characteristicMat_cont(:,n_i), label_table_cat);
-        [c,~,~,gnames] = multcompare(stats);
+        try
+        [a,~,stats]=anova1(characteristicMat_cont(:,n_i), label_table_cat);
         
-        compTable = array2table(c(:,[1,2,6]), 'VariableName', {'group 1','group 2', 'p_value'});
+        [c,m,h,gnames] = multcompare(stats);
+        %convert number label to label str
+        c_label_txt = cell(length(labels),3);
+        for c_ind = 1:size(c,1)
+
+             c_label_txt{c_ind,1} = gnames{c(c_ind,1)};
+             c_label_txt{c_ind,2} = gnames{c(c_ind,2)};
+             c_label_txt{c_ind,3} = c(c_ind,6);
+        end
+
+        compTable = array2table(c_label_txt, 'VariableName', {'group 1','group 2', 'p_value'});
         close all
         L_Fig = figure(3);
         axes('position',[.1,.4,.8,.5])
-        boxplot(characteristicMat_cont(:,n_i), label_table_cat);
+        boxplot(characteristicMat_cont(:,n_i), label_table_cat, 'labels', gnames');
         ylabel(y_label{n_i});
         txtBox = sprintf('%s',titleTxt);
         title(txtBox, 'Interpreter', 'none');
         y_lim = get(gca, 'ylim');
         ylim([y_lim(1), y_lim(2)*1.2])
-        text(0.95, y_lim(2)*1.1, sprintf('N= %d',11));%sum(label_table_cat==1)));
-        text(1.95, y_lim(2)*1.1, sprintf('N= %d',18));%sum(label_table_cat==2)));
-        %text(2.95, y_lim(2)*1.1, sprintf('N= %d',sum(label_table_cat==3)));
+        catch
+            x=1;
+        end
+        % plot N as text above the box plot
+        for b = 1: length(labels)
+            text(b-0.05, y_lim(2)*1.1, sprintf('N= %d',sum(cellfun(@(x) strcmp(x, gnames{b}), label_table_cat))));
+        end
+     
         % Convert Table to cell to char array
         tableCell = [compTable.Properties.VariableNames; table2cell(compTable)];
         tableCell(cellfun(@isnumeric,tableCell)) = cellfun(@num2str, tableCell(cellfun(@isnumeric,tableCell)),'UniformOutput',false);
@@ -292,7 +326,7 @@ else
     
     for n_i = 1: length(nameOfCat)
         titleTxt = [nameOfCat{n_i} ' Vs. Label' ];
-        
+        cat_names = {};
         num_cat = max(characteristicMat_cat(:, n_i));
         [cat_names{1:num_cat}] = deal(nameOfCat{n_i});
         for name_i = 1: num_cat
@@ -300,25 +334,34 @@ else
         end
         
         cat_names{name_i+1} = 'total';
-        catMat = array2table(zeros(num_cat+1, 4), 'RowNames', cat_names,...
-            'VariableNames',{'Negative'; 'Stable'; 'Positive';'total'});
+        label_names = labels;
+        label_names = [label_names; 'total'];
+        try
+            catMat = array2table(zeros(num_cat+1, size(label_names,1)), 'RowNames', cat_names,...
+            'VariableNames',label_names);
+        catch
+            error('Line 335: problem creating catMat table');
+        end
         catPerMat = catMat;
         expected_frequet = catMat;
         expected_num = catMat;
         % create the expected frequencies
         
         % create the observed frequency
-        for l = 1:3
+        for l = labels'
             for c = 1: num_cat
-                catMat{c, l} = sum(characteristicMat_cat(label_table_cat==l, n_i) == c);
+                catMat{c, l} = sum(characteristicMat_cat(cell2mat(cellfun(@(x) strcmp(x, l{:}), label_table_cat, 'UniformOutput', false)), n_i) == c);
                 
             end
-            
+            try
             catPerMat{:, l} = catMat{:, l}./sum(catMat{:,l});
+            catch
+                x=1;
+            end
             catMat{c+1, l} = sum(catMat{:, l});
             catPerMat{c+1, l} = sum(catPerMat{:, l});
         end
-        catMat{:, l+1} = sum(catMat{:,:},2);
+        catMat{:, size(labels,1)+1} = sum(catMat{:,:},2);
         
         for l = 1:3
             for c = 1: num_cat

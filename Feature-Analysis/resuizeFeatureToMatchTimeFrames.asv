@@ -1,6 +1,6 @@
 %% Resize feature to have same number of time stamps
 
-load('C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis- matlab\featureDataFile.mat')
+load('C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\featureDataFile.mat')
 
 [allDT , timeFactor, updateAllDts]= deal([]);
 maxTime = 20*60;
@@ -22,7 +22,7 @@ dframe = 20*60/numFrames;%(20 minutes * 60 seconds)/ min number of frames
 reSizeFeature = nan(numFrames, size(allFeatureMat,2), size(allFeatureMat,3));
 
 %% Resample using time scaling to 20 min
-for sInd = 43 1: size(allFeatureMat,3)
+for sInd = 1: size(allFeatureMat,3)
     current_s_id = correspondedId{sInd};
     current_hand = correspondedHandSide{sInd};
     sprintf('%s - %s', current_s_id, current_hand)%sInd
@@ -59,11 +59,11 @@ for sInd = 43 1: size(allFeatureMat,3)
     
     featureTable =  array2table(currentFeatures, 'VariableNames', variableNames);
     dashId = strfind(current_s_id,'_');
-    sName = ['s_' current_s_id() correspondedHandSide{sInd}];
+    sName = [current_s_id(1:dashId(2)) current_hand];
 %     if strfind(sName,'s_19')
 %         x=1;
 %     end
-    filesName = ['C:\Users\IdoMuller\OneDrive - DreaMed, Ltd\Desktop\Temp\JPG Resize Feature Tables\' sName '.xlsx'];
+    filesName = ['C:\Projects\Hand_IRT_Auto_Ecxtraction\Feature-Analysis\Resize Feature\' sName '.xlsx'];
     try
         writetable(featureTable, filesName);
     catch
