@@ -45,7 +45,7 @@ This (main) folder includes some code that helps to preform segmentation and reg
         - Segment the palm and fingeres from the background
         - Seperate between the fingeres and palm
          
-      After this process the main grey scale image with BW image and a another image with the seperated palm (in red) and fingeres (in blue) should appear below.
+      After this process the main grey scale image with BW image and a another image with the separated palm (in red) and fingers (in blue) should appear below.
     
     - 'Done' should appear to announce that the segmentation is done.
     
