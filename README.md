@@ -22,7 +22,7 @@ This (main) folder includes some code that helps to preform segmentation and reg
 2. This will open the following GUI
 
 
-![alt text](https://github.com/mullerido/Hand_IRT_Auto_Ecxtraction/blob/master/Run%20Extract%20Hand%20Features-fig.png)
+![alt text](https://github.com/mullerido/Hand_IRT_Auto_Ecxtraction/blob/master/Pre-proccess/Main/Run%20Extract%20Hand%20Features-fig.png)
 
 3. Use this GUI by:
   - Step I- Baseline image segmentation:
@@ -71,7 +71,7 @@ This (main) folder includes some code that helps to preform segmentation and reg
     - Press "Manual ROI' to open a GUI (see below) that allow the user to choose and sign the ROIs including to the ability to define the ROI radius (in case of fingers ROI). Press 'Save & Close' to save changes to ROIs. 
 
 
-      ![alt text](https://github.com/mullerido/Hand_IRT_Auto_Ecxtraction/blob/master/Manual%20ROI%20Selection-%20Fig.png)
+      ![alt text](https://github.com/mullerido/Hand_IRT_Auto_Ecxtraction/blob/master/Pre-proccess/Main/Manual%20ROI%20Selection-%20Fig.png)
     
     - Press 'Extract Feature' to get all ROIs features and put them inside one table:
       - Average intence
@@ -91,7 +91,7 @@ This (main) folder includes some code that helps to preform segmentation and reg
         -   Save feature button- to save the feature table inside the same directory as the images.
 
 
- ![alt text](https://github.com/mullerido/Hand_IRT_Auto_Ecxtraction/blob/master/Run%20Registration-%20Fig.png)
+ ![alt text](https://github.com/mullerido/Hand_IRT_Auto_Ecxtraction/blob/master/Pre-proccess/Main/Run%20Registration-%20Fig.png)
  
  Good luck!
 
